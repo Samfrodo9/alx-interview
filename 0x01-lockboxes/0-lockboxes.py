@@ -1,26 +1,22 @@
 #!/usr/bin/python3
 '''
-Create a function def pascal_triangle(n): that
-returns a list of lists of integers
-representing the Pascal's triangle of n:
+You have n number of locked boxes in front of you. Each box is numbered
+sequentially from 0 to n - 1 and each box may contain keys to the other boxes.
+Write a method that determines if all the boxes can be opened.
 '''
 
 
-def pascal_triangle(n):
-    '''
-    function that creates a list of lists of integers representing
-    the Pascal's triangle of a given integer.
-    '''
-    if n <= 0:
-        return []
+def canUnlockAll(boxes):
+    n = len(boxes)
+    unlocked = [False] * n
+    unlocked[0] = True
+    keys = boxes[0]
 
-    triangle = [[1]]
+    for i in range(n):
+        if unlocked[i]:
+            for key in boxes[i]:
+                if key < n and not unlocked[key]:
+                    unlocked[key] = True
+                    keys.extend(boxes[key])
 
-    for i in range(1, n):
-        row = [1]
-        for j in range(1, i):
-            row.append(triangle[i-1][j-1] + triangle[i-1][j])
-        row.append(1)
-        triangle.append(row)
-
-    return triangle
+    return all(unlocked)
